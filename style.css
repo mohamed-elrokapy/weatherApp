@@ -1,0 +1,79 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+section {
+  height: 100vh;
+  width: 100%;
+  background-image: url(Lovepik_com-361346866-background-with-sun-shining-through-gorgeous-image-captured-above-the-clouds.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+}
+.main {
+  height: 80%;
+  width: 50%;
+  background-color: rgba(0, 128, 0, 0.267);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.city_country {
+  height: 5%;
+  color: rgba(0, 26, 255, 0.712);
+}
+.time {
+  height: 5%;
+  color: rgba(0, 26, 255, 0.712);
+}
+.city_input {
+  height: 8%;
+  width: 40%;
+  text-align: center;
+}
+button {
+  width: 20%;
+  height: 5%;
+  border-radius: 4px;
+  border-color: transparent;
+}
+.not_valid_city {
+  height: 4%;
+  color: red;
+}
+.clouds {
+  display: flex;
+  gap: 15em;
+  align-items: center;
+  height: 10%;
+  color: rgba(0, 26, 255, 0.712);
+}
+
+.additional_information {
+  display: flex;
+  gap: 6em;
+  text-align: center;
+  height: 15%;
+}
+.heat_degree {
+  height: 3%;
+  color: rgba(0, 26, 255, 0.712);
+}
+.tittle {
+  height: 5%;
+}
+.windspeed,
+.humidity,
+.pressure {
+  height: 10%;
+}
+.wind_degree,
+.humidity_degree,
+.pressure_degree {
+  height: 50%;
+  color: rgba(0, 26, 255, 0.712);
+}
