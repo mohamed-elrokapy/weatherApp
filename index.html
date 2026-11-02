@@ -3,46 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-
+    <meta
+      name="description"
+      content="Current weather for any city: temperature, conditions, wind, humidity and pressure." />
+    <meta name="theme-color" content="#1d4e7a" />
+    <title>Weather</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <section>
-      <div class="main">
-        <h1 class="city_country"></h1>
-        <h1 class="time"></h1>
-        <input
-          type="text"
-          class="city_input"
-          placeholder=" enter your city here" />
-        <button>show</button>
-        <h1 class="not_valid_city"></h1>
-        <div class="clouds">
-          <img class="icon" src="" alt="" />
-          <span class="clouds_description"></span>
-        </div>
-        <h1 class="heat_degree"></h1>
-        <h1 class="additional_information_tittle tittle">
-          additional information
-        </h1>
-        <div class="additional_information">
-          <div class="windspeed">
-            <h1 class="additional_information_tittle">wind speed</h1>
-            <h1 class="wind_degree"></h1>
-          </div>
-          <div class="humidity">
-            <h1 class="additional_information_tittle">humidity</h1>
-            <h1 class="humidity_degree"></h1>
-          </div>
-          <div class="pressure">
-            <h1 class="additional_information_tittle">pressure</h1>
-            <h1 class="pressure_degree"></h1>
-          </div>
-        </div>
-      </div>
-    </section>
+  <body data-sky="idle">
+    <main>
+      <h1 class="title">Weather</h1>
 
+      <form id="search" class="search" role="search" novalidate>
+        <label for="city" class="visually-hidden">City</label>
+        <input
+          id="city"
+          name="city"
+          type="search"
+          placeholder="Search a city, e.g. Tunis"
+          autocomplete="off"
+          autocapitalize="words"
+          spellcheck="false"
+          aria-describedby="city-error" />
+        <button type="submit" id="submit">Search</button>
+        <p class="field-error" id="city-error" role="alert"></p>
+      </form>
+
+      <section class="card" id="card" data-state="idle" aria-live="polite" aria-busy="false" aria-label="Current weather">
+        <div id="card-body"></div>
+      </section>
+    </main>
+
+    <script src="config.js"></script>
     <script src="main.js"></script>
   </body>
 </html>
