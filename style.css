@@ -1,79 +1,175 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-section {
-  height: 100vh;
-  width: 100%;
-  background-image: url(Lovepik_com-361346866-background-with-sun-shining-through-gorgeous-image-captured-above-the-clouds.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  display: flex;
-}
-.main {
-  height: 80%;
-  width: 50%;
-  background-color: rgba(0, 128, 0, 0.267);
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
+/* Weather: the whole page is the sky. The backdrop follows the conditions and time of day. */
+@property --sky-top { syntax: "<color>"; inherits: true; initial-value: #1d4e7a; }
+@property --sky-bottom { syntax: "<color>"; inherits: true; initial-value: #4f8fbf; }
+
+:root {
+  --ink: #ffffff;
+  --ink-soft: #e1ebf5;
+  --glass: rgba(8, 18, 36, 0.5);
+  --glass-edge: rgba(255, 255, 255, 0.22);
+  --error: #ffd8d4;
+  --focus: #ffffff;
+  --font: "Avenir Next", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
 }
 
-.city_country {
-  height: 5%;
-  color: rgba(0, 26, 255, 0.712);
+body[data-sky="idle"]          { --sky-top: #1d4e7a; --sky-bottom: #4f8fbf; }
+body[data-sky="clear-day"]     { --sky-top: #1769b5; --sky-bottom: #62a8e0; }
+body[data-sky="clear-night"]   { --sky-top: #0b1530; --sky-bottom: #26386b; }
+body[data-sky="clouds-day"]    { --sky-top: #4b5d73; --sky-bottom: #8a9bb0; }
+body[data-sky="clouds-night"]  { --sky-top: #1c2430; --sky-bottom: #444f61; }
+body[data-sky="rain"]          { --sky-top: #2a3b4d; --sky-bottom: #5a7590; }
+body[data-sky="storm"]         { --sky-top: #151a28; --sky-bottom: #3b445e; }
+body[data-sky="snow"]          { --sky-top: #55718d; --sky-bottom: #b2c5d8; }
+body[data-sky="mist"]          { --sky-top: #5d6a73; --sky-bottom: #a3adb3; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: linear-gradient(180deg, var(--sky-top), var(--sky-bottom)) fixed;
+  color: var(--ink);
+  font-family: var(--font);
+  line-height: 1.45;
+  transition: --sky-top 700ms ease, --sky-bottom 700ms ease;
 }
-.time {
-  height: 5%;
-  color: rgba(0, 26, 255, 0.712);
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
 }
-.city_input {
-  height: 8%;
-  width: 40%;
-  text-align: center;
+
+main {
+  width: min(100%, 34rem);
+  margin: 0 auto;
+  padding: clamp(1.5rem, 6vh, 4rem) 1.25rem 3rem;
+  display: grid;
+  gap: 1.25rem;
 }
+
+.title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ---- Search ---- */
+.search {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.6rem;
+}
+.field-error { grid-column: 1 / -1; font-weight: 600; color: var(--error); }
+.field-error:empty { display: none; }
+
+input,
 button {
-  width: 20%;
-  height: 5%;
-  border-radius: 4px;
-  border-color: transparent;
+  font: inherit;
+  min-height: 3rem;
+  border-radius: 12px;
 }
-.not_valid_city {
-  height: 4%;
-  color: red;
+input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  color: var(--ink);
+  background: var(--glass);
+  border: 1.5px solid var(--glass-edge);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
-.clouds {
-  display: flex;
-  gap: 15em;
-  align-items: center;
-  height: 10%;
-  color: rgba(0, 26, 255, 0.712);
+input::placeholder { color: var(--ink-soft); opacity: 0.85; }
+input[aria-invalid="true"] { border-color: var(--error); }
+
+button {
+  padding: 0.6rem 1.4rem;
+  font-weight: 700;
+  color: #0b2540;
+  background: #ffffff;
+  border: 1.5px solid #ffffff;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+button:hover:not(:disabled) { background: #e3eefa; }
+button:disabled { opacity: 0.7; cursor: progress; }
+
+:is(input, button):focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
 }
 
-.additional_information {
+/* ---- Card ---- */
+.card {
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
+  border-radius: 20px;
+  padding: 1.5rem;
+  min-height: 16rem;
   display: flex;
-  gap: 6em;
-  text-align: center;
-  height: 15%;
+  align-items: center;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
 }
-.heat_degree {
-  height: 3%;
-  color: rgba(0, 26, 255, 0.712);
+#card-body { width: 100%; display: grid; gap: 1.25rem; }
+
+.message-title { font-size: 1.35rem; font-weight: 700; }
+.message-text { color: var(--ink-soft); max-width: 28rem; }
+.card[data-state="error"] .message-title { color: var(--error); }
+
+.skeleton {
+  height: 5.5rem;
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.08), rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
 }
-.tittle {
-  height: 5%;
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+.place-name { font-size: 1.6rem; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
+.place-time { color: var(--ink-soft); }
+
+.hero { display: flex; align-items: center; gap: 1rem; }
+.icon { flex: none; color: var(--ink); }
+.temp {
+  font-size: clamp(3.8rem, 17vw, 5.5rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
-.windspeed,
-.humidity,
-.pressure {
-  height: 10%;
+.desc { margin-top: 0.3rem; font-size: 1.15rem; text-transform: capitalize; }
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--glass-edge);
 }
-.wind_degree,
-.humidity_degree,
-.pressure_degree {
-  height: 50%;
-  color: rgba(0, 26, 255, 0.712);
+.detail { display: grid; gap: 0.1rem; }
+.detail dt {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.detail dd { font-size: 1.3rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+@media (min-width: 640px) {
+  .details { grid-template-columns: repeat(4, 1fr); }
+  main { width: min(100%, 40rem); }
+}
+
+@media (max-width: 380px) {
+  .icon { width: 72px; height: 72px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body { transition: none; }
+  button { transition: none; }
+  .skeleton { animation: none; }
 }
